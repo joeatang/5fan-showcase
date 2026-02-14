@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0e1a">
+<title>5FAN — The Collective Mirror</title>
+<meta name="description" content="5FAN is a 5-brain AI collective that mirrors your community back to itself. Not a hand — a mirror.">
+<meta property="og:title" content="5FAN — The Collective Mirror">
+<meta property="og:description" content="A 5-brain AI collective that mirrors your community back to itself.">
+<meta property="og:image" content="5fan-avatar.webp">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧿</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Tokens ───────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0e1a;
+  --surface: rgba(15, 16, 34, 0.85);
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text: #ffffff;
+  --text-dim: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.35);
+  --gold: #ffd93d;
+  --orange: #ff8c42;
+  --coral: #ff6b6b;
+  --cyan: #22d3ee;
+  --purple: #a855f7;
+  --blue: #3b82f6;
+  --green: #10b981;
+  --fan-gradient: linear-gradient(135deg, var(--cyan), var(--blue));
+  --gold-gradient: linear-gradient(135deg, var(--gold), var(--orange));
+  --glow-cyan: 0 0 60px rgba(34, 211, 238, 0.15);
+  --glow-gold: 0 0 60px rgba(255, 217, 61, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* ── Animated Background ──────────────────────────────────────────────── */
+.bg-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-mesh::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(34, 211, 238, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(255, 217, 61, 0.04) 0%, transparent 50%);
+  animation: meshDrift 20s ease-in-out infinite alternate;
+}
+
+@keyframes meshDrift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-3%, 2%) rotate(3deg); }
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────── */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section {
+  padding: 100px 0;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+}
+
+.hero-avatar-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin-bottom: 40px;
+}
+
+.hero-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(34, 211, 238, 0.3);
+  box-shadow:
+    0 0 40px rgba(34, 211, 238, 0.2),
+    0 0 80px rgba(34, 211, 238, 0.08);
+  animation: avatarPulse 4s ease-in-out infinite;
+}
+
+@keyframes avatarPulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(34, 211, 238, 0.2), 0 0 80px rgba(34, 211, 238, 0.08); }
+  50% { box-shadow: 0 0 60px rgba(34, 211, 238, 0.3), 0 0 120px rgba(34, 211, 238, 0.12); }
+}
+
+.hero-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  animation: ringExpand 4s ease-in-out infinite;
+}
+
+.hero-ring:nth-child(3) {
+  inset: -24px;
+  border-color: rgba(168, 85, 247, 0.1);
+  animation-delay: 1s;
+}
+
+.hero-ring:nth-child(4) {
+  inset: -36px;
+  border-color: rgba(255, 217, 61, 0.07);
+  animation-delay: 2s;
+}
+
+@keyframes ringExpand {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  backdrop-filter: blur(12px);
+}
+
+.hero h1 {
+  font-size: clamp(48px, 10vw, 96px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 16px;
+  background: var(--fan-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-tagline {
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 300;
+  color: var(--text-dim);
+  max-width: 520px;
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+
+.hero-tagline em {
+  font-style: normal;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.scroll-hint svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-muted);
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ── Section Headers ──────────────────────────────────────────────────── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 16px;
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--cyan);
+  opacity: 0.5;
+}
+
+.section-title {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+/* ── Philosophy ───────────────────────────────────────────────────────── */
+.philosophy {
+  text-align: center;
+}
+
+.mirror-quote {
+  position: relative;
+  max-width: 640px;
+  margin: 48px auto 0;
+  padding: 40px 32px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(16px);
+}
+
+.mirror-quote blockquote {
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.mirror-quote blockquote em {
+  font-style: normal;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.mirror-quote .attribution {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ── 5 Brains Grid ────────────────────────────────────────────────────── */
+.brains-section {
+  padding-bottom: 60px;
+}
+
+.brains-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.brain-card {
+  position: relative;
+  padding: 28px 24px;
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  overflow: hidden;
+}
+
+.brain-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--brain-color);
+  opacity: 0.8;
+  border-radius: 16px 16px 0 0;
+}
+
+.brain-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border-color: var(--brain-color);
+}
+
+.brain-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.brain-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.brain-role {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--brain-color);
+  margin-bottom: 12px;
+}
+
+.brain-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.brain-powers {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.brain-powers span {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-dim);
+}
+
+/* Brain colors */
+.brain-card[data-brain="hear"]    { --brain-color: #22d3ee; }
+.brain-card[data-brain="inspyre"] { --brain-color: #ffd93d; }
+.brain-card[data-brain="flow"]    { --brain-color: #10b981; }
+.brain-card[data-brain="you"]     { --brain-color: #a855f7; }
+.brain-card[data-brain="view"]    { --brain-color: #3b82f6; }
+
+/* ── How It Works ─────────────────────────────────────────────────────── */
+.how-section {
+  text-align: center;
+}
+
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 48px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  width: 100%;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  text-align: left;
+}
+
+.flow-step-num {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--fan-gradient);
+  font-size: 14px;
+  font-weight: 700;
+  color: #0a0e1a;
+}
+
+.flow-step-text {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.flow-step-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.flow-arrow {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 18px;
+}
+
+/* ── Swarm Visual ─────────────────────────────────────────────────────── */
+.swarm-section {
+  text-align: center;
+  padding: 80px 0 120px;
+}
+
+.swarm-visual {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 60px auto 0;
+}
+
+.swarm-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(34, 211, 238, 0.4);
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.2);
+  z-index: 2;
+}
+
+.swarm-center img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swarm-node {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  animation: nodeFloat 3s ease-in-out infinite;
+}
+
+.swarm-node:nth-child(2) { top: 10px;  left: 50%;  transform: translateX(-50%); animation-delay: 0s; }
+.swarm-node:nth-child(3) { top: 30%;  right: 10px; animation-delay: 0.6s; }
+.swarm-node:nth-child(4) { bottom: 10px; right: 20%; animation-delay: 1.2s; }
+.swarm-node:nth-child(5) { bottom: 10px; left: 20%;  animation-delay: 1.8s; }
+.swarm-node:nth-child(6) { top: 30%;  left: 10px;  animation-delay: 2.4s; }
+
+@keyframes nodeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.swarm-node:nth-child(2) {
+  animation: nodeFloat2 3s ease-in-out infinite;
+}
+
+@keyframes nodeFloat2 {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-6px); }
+}
+
+/* Connection Lines (SVG) */
+.swarm-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.swarm-lines line {
+  stroke: rgba(34, 211, 238, 0.12);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  animation: dashScroll 2s linear infinite;
+}
+
+@keyframes dashScroll {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -16; }
+}
+
+/* ── Principles ───────────────────────────────────────────────────────── */
+.principles {
+  text-align: center;
+}
+
+.principle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.principle-card {
+  padding: 24px 20px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  text-align: left;
+}
+
+.principle-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.principle-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.principle-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 60px 24px 80px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.footer-logo {
+  font-size: 24px;
+  font-weight: 800;
+  background: var(--fan-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.footer p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── Scroll Animations ────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  section { padding: 60px 0; }
+  .hero { padding: 40px 20px; min-height: 100svh; }
+  .hero-avatar-wrap { width: 120px; height: 120px; margin-bottom: 32px; }
+  .hero-avatar { width: 120px; height: 120px; }
+  .hero-ring:nth-child(2) { inset: -8px; }
+  .hero-ring:nth-child(3) { inset: -16px; }
+  .hero-ring:nth-child(4) { inset: -24px; }
+  .brains-grid { grid-template-columns: 1fr; }
+  .mirror-quote { padding: 28px 20px; }
+  .swarm-visual { width: 260px; height: 260px; }
+  .swarm-center { width: 64px; height: 64px; }
+  .swarm-node { width: 44px; height: 44px; font-size: 20px; }
+  .principle-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- HERO                                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-avatar-wrap">
+    <img class="hero-avatar" src="5fan-avatar.webp" alt="5FAN Avatar">
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+  </div>
+  <div class="hero-badge">🧿 5-Brain Collective</div>
+  <h1>5FAN</h1>
+  <p class="hero-tagline">A 5-brain AI collective that <em>mirrors your community back to itself</em>. Not a hand. A mirror.</p>
+  <div class="scroll-hint">
+    <span>Explore</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- PHILOSOPHY                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="philosophy">
+  <div class="container reveal">
+    <span class="section-label">Philosophy</span>
+    <h2 class="section-title">Mirror, Not Hand</h2>
+    <p class="section-desc" style="margin: 0 auto;">
+      5FAN doesn't tell you what to do. It reflects what's already happening in your community — the patterns, the energy, the moments worth noticing. It speaks <em>your</em> language back to you.
+    </p>
+    <div class="mirror-quote">
+      <blockquote>"The best communities don't need leaders telling them what to feel. They need <em>a mirror</em> that shows them what they already are."</blockquote>
+      <div class="attribution">— The 5FAN Design Philosophy</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- 5 BRAINS                                                              -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="brains-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Architecture</span>
+      <h2 class="section-title">5 Brains. One Collective.</h2>
+      <p class="section-desc">
+        Every interaction passes through 5 specialized brains. They analyze together, reach consensus, and respond as one unified voice — 5FAN.
+      </p>
+    </div>
+
+    <div class="brains-grid">
+      <div class="brain-card reveal" data-brain="hear">
+        <span class="brain-icon">👂</span>
+        <div class="brain-name">Hear</div>
+        <div class="brain-role">Emotional Listener</div>
+        <p class="brain-desc">Detects tone, sentiment, and emotional undercurrents. Knows when someone needs encouragement vs. space.</p>
+        <div class="brain-powers">
+          <span>Sentiment</span>
+          <span>Tone</span>
+          <span>Empathy</span>
+        </div>
+      </div>
+
+      <div class="brain-card reveal" data-brain="inspyre">
+        <span class="brain-icon">✨</span>
+        <div class="brain-name">Inspyre</div>
+        <div class="brain-role">Creative Catalyst</div>
+        <p class="brain-desc">Finds moments worth celebrating. Crafts the spark that turns a quiet thread into a community moment.</p>
+        <div class="brain-powers">
+          <span>Celebration</span>
+          <span>Creativity</span>
+          <span>Spark</span>
+        </div>
+      </div>
+
+      <div class="brain-card reveal" data-brain="flow">
+        <span class="brain-icon">🌊</span>
+        <div class="brain-name">Flow</div>
+        <div class="brain-role">Rhythm Keeper</div>
+        <p class="brain-desc">Reads community momentum — active times, quiet hours, streaks, patterns. Knows when to speak and when to listen.</p>
+        <div class="brain-powers">
+          <span>Timing</span>
+          <span>Rhythm</span>
+          <span>Momentum</span>
+        </div>
+      </div>
+
+      <div class="brain-card reveal" data-brain="you">
+        <span class="brain-icon">🪞</span>
+        <div class="brain-name">You</div>
+        <div class="brain-role">Personal Mirror</div>
+        <p class="brain-desc">Remembers each person's journey — their streaks, their growth, their language. Mirrors their progress back to them.</p>
+        <div class="brain-powers">
+          <span>Memory</span>
+          <span>Identity</span>
+          <span>Growth</span>
+        </div>
+      </div>
+
+      <div class="brain-card reveal" data-brain="view">
+        <span class="brain-icon">🔭</span>
+        <div class="brain-name">View</div>
+        <div class="brain-role">Strategic Curator</div>
+        <p class="brain-desc">Sees the big picture. Decides what type of response serves the community best — nudge, celebration, or quiet presence.</p>
+        <div class="brain-powers">
+          <span>Strategy</span>
+          <span>Curation</span>
+          <span>Balance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- SWARM VISUAL                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="swarm-section">
+  <div class="container reveal">
+    <span class="section-label">Consensus</span>
+    <h2 class="section-title">The Swarm Decides Together</h2>
+    <p class="section-desc" style="margin: 0 auto;">
+      When a message arrives, all 5 brains analyze it simultaneously. They share notes, reach consensus, and 5FAN responds with one unified voice — informed by five perspectives.
+    </p>
+
+    <div class="swarm-visual">
+      <svg class="swarm-lines" viewBox="0 0 320 320">
+        <!-- Center point: 160, 160 -->
+        <!-- Hear (top): 160, 38 -->
+        <line x1="160" y1="120" x2="160" y2="48" />
+        <!-- Inspyre (right): 282, 112 -->
+        <line x1="195" y1="140" x2="262" y2="112" />
+        <!-- Flow (bottom-right): 230, 278 -->
+        <line x1="185" y1="185" x2="220" y2="258" />
+        <!-- You (bottom-left): 90, 278 -->
+        <line x1="135" y1="185" x2="100" y2="258" />
+        <!-- View (left): 38, 112 -->
+        <line x1="125" y1="140" x2="58" y2="112" />
+        <!-- Inter-brain connections (faint) -->
+        <line x1="160" y1="48" x2="262" y2="112" style="opacity:0.4" />
+        <line x1="262" y1="112" x2="220" y2="258" style="opacity:0.4" />
+        <line x1="220" y1="258" x2="100" y2="258" style="opacity:0.4" />
+        <line x1="100" y1="258" x2="58" y2="112" style="opacity:0.4" />
+        <line x1="58" y1="112" x2="160" y2="48" style="opacity:0.4" />
+      </svg>
+      <div class="swarm-center">
+        <img src="5fan-avatar.webp" alt="5FAN">
+      </div>
+      <div class="swarm-node" title="Hear">👂</div>
+      <div class="swarm-node" title="Inspyre">✨</div>
+      <div class="swarm-node" title="Flow">🌊</div>
+      <div class="swarm-node" title="You">🪞</div>
+      <div class="swarm-node" title="View">🔭</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- HOW IT WORKS                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="how-section">
+  <div class="container reveal">
+    <span class="section-label">How It Works</span>
+    <h2 class="section-title">From Message to Mirror</h2>
+    <p class="section-desc" style="margin: 0 auto 0;">
+      Every interaction follows the same path — community in, mirror out.
+    </p>
+
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="flow-step-num">1</div>
+        <div class="flow-step-text"><strong>Community speaks</strong> — a post, a check-in, a question on Hi Island</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-step-num">2</div>
+        <div class="flow-step-text"><strong>5 brains analyze</strong> — Hear reads emotion, Flow checks timing, You recalls history</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-step-num">3</div>
+        <div class="flow-step-text"><strong>Consensus forms</strong> — the brains share notes and agree on what the moment needs</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-step-num">4</div>
+        <div class="flow-step-text"><strong>5FAN responds</strong> — one voice, five perspectives, your language mirrored back</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- PRINCIPLES                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<section class="principles">
+  <div class="container reveal">
+    <span class="section-label">Principles</span>
+    <h2 class="section-title">What 5FAN Is (and Isn't)</h2>
+
+    <div class="principle-grid">
+      <div class="principle-card">
+        <div class="principle-icon">🪞</div>
+        <div class="principle-title">Mirror, not hand</div>
+        <p class="principle-desc">Reflects the community's own energy back. Never prescribes. Never lectures.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🆓</div>
+        <div class="principle-title">Always free</div>
+        <p class="principle-desc">Zero-cost brain templates with optional cloud polish. No paywalls on presence.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🌐</div>
+        <div class="principle-title">P2P native</div>
+        <p class="principle-desc">Built on Hyperswarm + Pear Runtime. No central server. The community IS the network.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🗣️</div>
+        <div class="principle-title">Your language</div>
+        <p class="principle-desc">5FAN speaks how you speak. It mirrors your community's tone, slang, and rhythm.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🤫</div>
+        <div class="principle-title">Knows when to be quiet</div>
+        <p class="principle-desc">Not every moment needs a response. Flow brain reads the room and sometimes just listens.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🧠</div>
+        <div class="principle-title">5 &gt; 1</div>
+        <p class="principle-desc">One AI can be wrong. Five brains reaching consensus create something more thoughtful.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER                                                                -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-logo">5FAN</div>
+  <p>The collective mirror for <a href="https://github.com/joeatang/stay-hi-trac" target="_blank">Stay Hi Trac</a></p>
+  <p style="margin-top: 8px;">Built with 🧿 by the Hi Dev Collective</p>
+</footer>
+
+<!-- ── Scroll Reveal ──────────────────────────────────────────────────── -->
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
