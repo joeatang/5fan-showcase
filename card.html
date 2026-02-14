@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>5FAN — The Collective</title>
+<meta name="description" content="5FAN: A 5-brain AI collective that mirrors your community back to itself.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧿</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: #0a0e1a;
+  color: #fff;
+  font-family: 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Animated Background Mesh ─────────────────────────────────────────── */
+.bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+.bg::before {
+  content: '';
+  position: absolute; inset: -50%;
+  width: 200%; height: 200%;
+  background:
+    radial-gradient(ellipse at 25% 40%, rgba(34,211,238,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 30%, rgba(168,85,247,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 85%, rgba(255,217,61,0.04) 0%, transparent 50%);
+  animation: drift 25s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  0% { transform: translate(0,0) rotate(0); }
+  100% { transform: translate(-2%,1.5%) rotate(2deg); }
+}
+
+/* ── Main Layout ──────────────────────────────────────────────────────── */
+.card {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 520px);
+  height: min(92vh, 720px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(20px, 4vh, 40px) clamp(16px, 4vw, 32px);
+  background: rgba(15, 16, 34, 0.8);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 28px;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 120px rgba(34,211,238,0.04);
+  overflow: hidden;
+}
+
+/* ── Avatar + Orbiting Brains ─────────────────────────────────────────── */
+.orbit-wrap {
+  position: relative;
+  width: min(44vw, 180px);
+  height: min(44vw, 180px);
+  flex-shrink: 0;
+  margin-bottom: clamp(12px, 2vh, 20px);
+}
+
+.avatar {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(34,211,238,0.35);
+  box-shadow: 0 0 30px rgba(34,211,238,0.2), 0 0 60px rgba(34,211,238,0.06);
+  z-index: 2;
+  animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 30px rgba(34,211,238,0.2), 0 0 60px rgba(34,211,238,0.06); }
+  50%     { box-shadow: 0 0 45px rgba(34,211,238,0.3), 0 0 90px rgba(34,211,238,0.1); }
+}
+
+/* Orbit ring */
+.orbit-ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(34,211,238,0.1);
+  animation: spin 30s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Brain nodes */
+.brain-node {
+  position: absolute;
+  width: clamp(32px,8vw,40px);
+  height: clamp(32px,8vw,40px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px,3.5vw,18px);
+  background: rgba(15,16,34,0.95);
+  border: 1px solid var(--c);
+  box-shadow: 0 0 12px var(--glow);
+  z-index: 3;
+  cursor: default;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  animation: spin 30s linear infinite reverse;
+}
+.brain-node:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 24px var(--glow);
+}
+
+/* Positioning the 5 brains on the orbit circle */
+.brain-node:nth-child(1) { top: 0;    left: 50%;  transform: translate(-50%, -50%); --c: #22d3ee; --glow: rgba(34,211,238,0.25); }
+.brain-node:nth-child(2) { top: 20.5%; right: 0;   transform: translate(50%, -50%); --c: #ffd93d; --glow: rgba(255,217,61,0.25); }
+.brain-node:nth-child(3) { bottom: 11%; right: 5%;  transform: translate(50%, 50%); --c: #10b981; --glow: rgba(16,185,129,0.25); }
+.brain-node:nth-child(4) { bottom: 11%; left: 5%;   transform: translate(-50%, 50%); --c: #a855f7; --glow: rgba(168,85,247,0.25); }
+.brain-node:nth-child(5) { top: 20.5%; left: 0;    transform: translate(-50%, -50%); --c: #3b82f6; --glow: rgba(59,130,246,0.25); }
+
+/* ── Title ────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 100px;
+  background: rgba(34,211,238,0.08);
+  border: 1px solid rgba(34,211,238,0.15);
+  font-size: 10px; font-weight: 600;
+  color: #22d3ee;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: clamp(6px, 1vh, 10px);
+}
+
+h1 {
+  font-size: clamp(36px, 8vw, 56px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, #22d3ee, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+  margin-bottom: clamp(4px, 0.8vh, 8px);
+}
+
+.tagline {
+  font-size: clamp(13px, 2.5vw, 16px);
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  max-width: 340px;
+  line-height: 1.5;
+  margin-bottom: clamp(12px, 2.5vh, 24px);
+}
+.tagline em { font-style: normal; color: #ffd93d; font-weight: 500; }
+
+/* ── Brain List ───────────────────────────────────────────────────────── */
+.brains {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.8vh, 8px);
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+}
+
+.brain-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: clamp(6px, 1.2vh, 10px) 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.brain-row:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--accent);
+}
+
+.brain-row .icon {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.brain-row .info { flex: 1; min-width: 0; }
+.brain-row .name {
+  font-size: clamp(12px, 2.2vw, 14px);
+  font-weight: 700;
+  color: var(--accent);
+}
+.brain-row .role {
+  font-size: clamp(10px, 1.8vw, 11px);
+  color: rgba(255,255,255,0.4);
+  font-weight: 500;
+}
+
+/* ── Bottom ───────────────────────────────────────────────────────────── */
+.footer-line {
+  margin-top: clamp(8px, 1.5vh, 16px);
+  padding-top: clamp(8px, 1.5vh, 12px);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.mirror-text {
+  font-size: clamp(10px, 1.8vw, 12px);
+  color: rgba(255,255,255,0.3);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.cta-link {
+  font-size: clamp(10px, 1.8vw, 12px);
+  color: #22d3ee;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex; align-items: center; gap: 4px;
+  transition: color 200ms;
+}
+.cta-link:hover { color: #67e8f9; }
+
+/* ── Tooltip on brain hover ───────────────────────────────────────────── */
+.brain-node[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(10,14,26,0.95);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: fadeIn 150ms ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(4px); } }
+
+/* small screens — tighter */
+@media (max-height: 600px) {
+  .orbit-wrap { width: 130px; height: 130px; }
+  .badge { margin-bottom: 4px; }
+  h1 { margin-bottom: 2px; }
+  .tagline { margin-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="card">
+  <!-- ── Avatar with orbiting brains ── -->
+  <div class="orbit-wrap">
+    <div class="orbit-ring">
+      <div class="brain-node" data-tip="Hear — Emotional Listener">👂</div>
+      <div class="brain-node" data-tip="Inspyre — Creative Catalyst">✨</div>
+      <div class="brain-node" data-tip="Flow — Rhythm Keeper">🌊</div>
+      <div class="brain-node" data-tip="You — Personal Mirror">🪞</div>
+      <div class="brain-node" data-tip="View — Strategic Curator">🔭</div>
+    </div>
+    <img class="avatar" src="5fan-avatar.webp" alt="5FAN">
+  </div>
+
+  <!-- ── Title ── -->
+  <div class="badge">🧿 5-Brain Collective</div>
+  <h1>5FAN</h1>
+  <p class="tagline">Five brains. One voice. A <em>mirror</em> that reflects your community back to itself.</p>
+
+  <!-- ── 5 Brains ── -->
+  <div class="brains">
+    <div class="brain-row" style="--accent: #22d3ee;">
+      <div class="icon">👂</div>
+      <div class="info">
+        <div class="name">Hear</div>
+        <div class="role">Emotional Listener — reads tone, sentiment &amp; empathy</div>
+      </div>
+    </div>
+    <div class="brain-row" style="--accent: #ffd93d;">
+      <div class="icon">✨</div>
+      <div class="info">
+        <div class="name">Inspyre</div>
+        <div class="role">Creative Catalyst — finds moments worth celebrating</div>
+      </div>
+    </div>
+    <div class="brain-row" style="--accent: #10b981;">
+      <div class="icon">🌊</div>
+      <div class="info">
+        <div class="name">Flow</div>
+        <div class="role">Rhythm Keeper — reads momentum, knows when to be quiet</div>
+      </div>
+    </div>
+    <div class="brain-row" style="--accent: #a855f7;">
+      <div class="icon">🪞</div>
+      <div class="info">
+        <div class="name">You</div>
+        <div class="role">Personal Mirror — remembers your journey &amp; growth</div>
+      </div>
+    </div>
+    <div class="brain-row" style="--accent: #3b82f6;">
+      <div class="icon">🔭</div>
+      <div class="info">
+        <div class="name">View</div>
+        <div class="role">Strategic Curator — sees the big picture, decides what to say</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="footer-line">
+    <span class="mirror-text">"Not a hand. A mirror."</span>
+    <a class="cta-link" href="https://github.com/joeatang/stay-hi-trac" target="_blank">Stay Hi Trac &rarr;</a>
+  </div>
+</div>
+
+</body>
+</html>
